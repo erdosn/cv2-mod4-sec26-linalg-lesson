@@ -1,6 +1,6 @@
 
 ### Questions
-- asked to plot the residuals without the statsmodels (only using numpy)
+- what makes a tensor different in python? 
 
 ### Keyterms
 - **Rank (row and column)**: number of non zero rows of matrix (or it's transpose), after matrix has been converted to row echelon form
@@ -20,6 +20,11 @@
 YWBAT
 - describe the importance of linear independence
 - explain how linear independence effects OLS
+- define a dot product and what it tells us about vectors
+- cosine similarity and what it tells us about vectors
+- define matrix multiplication
+- define matrix inverses
+- big O notation - what is it? why should we care about it? 
 
 ### Outline
 
@@ -28,10 +33,142 @@ YWBAT
 import pandas as pd
 import numpy as np
 
+from sklearn.metrics.pairwise import cosine_similarity, cosine_distances
+
 import matplotlib.pyplot as plt
 ```
 
-### What does it mean for a space to be linear independent
+
+```python
+# a vector is a list of numbers
+v1 = np.array([3, 4])
+v1_length = np.linalg.norm(v1)
+v2 = np.array([-5, 12])
+v2_length = np.linalg.norm(v2)
+
+v1_angle = np.math.atan(4/3)
+v2_angle = np.math.atan(12/5)
+
+v1_length, v2_length, v1_angle, v2_angle
+```
+
+
+
+
+    (5.0, 13.0, 0.9272952180016122, 1.176005207095135)
+
+
+
+
+```python
+v1.shape, v2.shape # vectors have no columns (only row) so there isn't a 2nd dimension
+
+```
+
+
+
+
+    ((2,), (2,))
+
+
+
+
+```python
+cosine_distances([v1, v2])
+```
+
+
+
+
+    array([[0.        , 0.49230769],
+           [0.49230769, 0.        ]])
+
+
+
+
+```python
+v3 = np.array([3, 5])
+v1 = np.array([3, 4])
+
+cosine_distances([v1, v3])
+```
+
+
+
+
+    array([[0.        , 0.00530821],
+           [0.00530821, 0.        ]])
+
+
+
+
+```python
+cosine_similarity([v1, v3]), cosine_similarity([v1, v2])
+```
+
+
+
+
+    (array([[1.        , 0.99469179],
+            [0.99469179, 1.        ]]), array([[1.        , 0.50769231],
+            [0.50769231, 1.        ]]))
+
+
+
+
+```python
+# Dot Product 
+
+v1 = np.array([10, 0])
+v2 = np.array([0, 10])
+
+# the angle between v1 and v2 = 90 degrees or pi/2 radians
+
+v1.dot(v2) # dot product = 0 when 2 vectors are orthogonal (right angle)
+
+v2.dot(v1)
+```
+
+
+
+
+    0
+
+
+
+
+```python
+v1 = np.random.randint(0, 10, size=(3,))
+
+v2 = np.random.randint(0, 10, size=(3,))
+
+v1.dot(v2), v2.dot(v1) # commutative in other words v1 dot v2 = v2 dot v1
+```
+
+
+
+
+    (65, 65)
+
+
+
+# Properties of Vectors
+- Magnitude (Norms)
+    - Hypotenuse of that right triangle
+- Direction
+    - 
+- Straight line segment
+
+# Relationships between pairs of Vectors
+- Share the origin (0, 0)
+- Distance between the vectors
+    - Euclidean Distance
+    - Angle between vectors
+        - cosine similarity
+    - Dot Product
+
+### What does it mean for a space to be linear independent 
+    - No vectors are parallel
 
 
 Why is this important? (From stats-exchange)
@@ -78,7 +215,111 @@ So this is what we're estimating in OLS to get our $\beta$s
 
 ### Let's look at a dataset X if it's linearly indepedent vs Linearly dependent
 
+
+```python
+
+```
+
+
+```python
+
+```
+
 y = XB
+
+### Matrix Properties
+- Matrix Inverses
+    - Not every Matrix has an inverse
+        - Which is weird, because every number has a multiplicate inverse
+            - Ex: 4 has inverse of 1/4 because 4\*1/4 = 1
+    - types of inverses
+        - Right Inverse 
+            - Given a Matrix A of dimensions n x p
+            - A has a right inverse B with dimensions p x n
+            - Since A x B = (n x p) x (p x n)
+        - Left Inverse
+            - Given a Matrix A of dimensions n x p
+            - A has a left inverse B with dimensions p x n
+            - Since B x A = (p x n) x (n x p)
+        - What has to be true for Left Inverse = Right Inverse
+            - A has to be square (n x n)
+            - det(A) != 0
+
+
+```python
+### What is a tensor?
+- A tensor is a list of matrices 
+- 
+```
+
+
+```python
+# Example of Tensor
+tensor = np.array([[[[1, 2], [3, 4]], [[5, 6], [7, 8]]], [[[1, 2], [3, 4]], [[5, 6], [7, 8]]], [[[1, 2], [3, 4]], [[5, 6], [7, 8]]]])
+print(tensor.shape)
+tensor
+```
+
+    (3, 2, 2, 2)
+
+
+
+
+
+    array([[[[1, 2],
+             [3, 4]],
+    
+            [[5, 6],
+             [7, 8]]],
+    
+    
+           [[[1, 2],
+             [3, 4]],
+    
+            [[5, 6],
+             [7, 8]]],
+    
+    
+           [[[1, 2],
+             [3, 4]],
+    
+            [[5, 6],
+             [7, 8]]]])
+
+
+
+
+```python
+tensor_0 = np.matrix([1])
+tensor_0.shape
+```
+
+
+
+
+    (1, 1)
+
+
+
+
+```python
+
+```
+
+
+```python
+
+```
+
+
+```python
+
+```
+
+
+```python
+
+```
 
 
 ```python
@@ -496,7 +737,7 @@ plt.show()
 ```
 
 
-![png](lesson-plan_files/lesson-plan_31_0.png)
+![png](lesson-plan_files/lesson-plan_49_0.png)
 
 
 
@@ -508,7 +749,81 @@ plt.show()
 ```
 
 
-![png](lesson-plan_files/lesson-plan_32_0.png)
+![png](lesson-plan_files/lesson-plan_50_0.png)
 
 
 ### Assessment
+
+# Big O Notation
+- Why do we care? 
+    - Job Interviews
+    - Code Efficiency / Complexity
+    
+- What is a FLOP
+    - floating point operations per second
+    
+
+
+```python
+def big_O_1():
+    a = 3 + 4
+    return a
+```
+
+
+```python
+def big_O_n(lst):
+    new_list = []
+    for i in lst:
+        new_list.append(i + 2)
+    return new_list
+```
+
+if my lst is length 3 then we get 3 FLOPS
+
+if my lst is length 10 then we get 10 FLOPS
+
+if my lst is length N then we get N FLOPS
+
+
+```python
+def big_O_n_squared(lst):
+    new_list = []
+    for i in lst:
+        for j in lst:
+            new_list.append(i*j + 2)
+    return new_list
+```
+
+
+```python
+lst = [1, 2, 3]
+
+big_O_n(lst)
+```
+
+
+
+
+    [3, 4, 5]
+
+
+
+
+```python
+big_O_n_squared(lst)
+```
+
+
+
+
+    [3, 4, 5, 4, 6, 8, 5, 8, 11]
+
+
+
+### Study the sorting algorithms and their Big O values
+
+
+```python
+
+```
